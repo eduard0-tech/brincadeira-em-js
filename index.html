@@ -109,33 +109,35 @@ button {
   </div>
 
   <script>
-    const btnSim = document.getElementById('btnSim');
-    const btnNao = document.getElementById('btnNao');
+  const btnSim = document.getElementById('btnSim');
+  const btnNao = document.getElementById('btnNao');
 
-    function fugir(event) {
-      // só adiciona position absolute na primeira fuga
-      if (btnNao.style.position !== 'absolute') {
-        btnNao.style.position = 'absolute';
-      }
+  // Função única que posiciona o botão em lugar aleatório na viewport
+  function moverBotao() {
+    const btnWidth = btnNao.clientWidth;
+    const btnHeight = btnNao.clientHeight;
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    btnNao.style.position = 'absolute';
+    btnNao.style.left = `${x}px`;
+    btnNao.style.top = `${y}px`;
+  }
 
-      const btnWidth = btnNao.clientWidth;
-      const btnHeight = btnNao.clientHeight;
-      const maxX = window.innerWidth - btnWidth;
-      const maxY = window.innerHeight - btnHeight;
+  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+  if (isTouchDevice) {
+    // No celular: move sozinho a cada 500 ms
+    setInterval(moverBotao, 500);
+  } else {
+    // No desktop: foge ao passar o mouse
+    btnNao.addEventListener('mouseenter', moverBotao);
+  }
 
-      btnNao.style.left = `${x}px`;
-      btnNao.style.top = `${y}px`;
-    }
-
-    btnNao.addEventListener('mousemove', fugir);
-    btnNao.addEventListener('touchstart', fugir);
-
-    btnSim.addEventListener('click', () => {
-      alert("Sabia que você ia dizer sim!! ❤️");
-    });
+  btnSim.addEventListener('click', () => {
+    alert("Sabia que você ia dizer sim!! ❤️");
+  });
   </script>
 </body>
 </html>
